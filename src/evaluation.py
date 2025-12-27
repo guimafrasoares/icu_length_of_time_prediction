@@ -1,16 +1,16 @@
 from sklearn.metrics import accuracy_score, roc_auc_score, matthews_corrcoef, balanced_accuracy_score, r2_score, f1_score
 from sklearn.metrics import  mean_absolute_error, mean_squared_error, root_mean_squared_error, mean_absolute_percentage_error
 
-def avaliar_classificacao(y_true, y_pred):
+def evaluate_classification_model(y_true, y_pred):
     """
-    Avalia o desempenho de um modelo de classificação.
+    Evaluate the performance of a classification model.
 
-    Parâmetros:
-    y_true (list ou array): Valores reais das classes.
-    y_pred (list ou array): Valores previstos pelo modelo.
+    Parameters:
+    y_true (list or array): Real values.
+    y_pred (list or array): Predicted values.
 
-    Retorna:
-    dict: Dicionário contendo as métricas de avaliação.
+    Returns:
+    dict: Dictionary containing the evaluation metrics.
     ACC: Accuracy
     Balanced_ACC: Balanced Accuracy
     AUC: Area Under the Curve
@@ -32,16 +32,16 @@ def avaliar_classificacao(y_true, y_pred):
     }
 
 
-def avaliar_regressao(y_true, y_pred):
+def evaluate_regression_model(y_true, y_pred):
     """
-    Avalia o desempenho de um modelo de regressão.
+    Evaluate the performance of a regression model.
 
-    Parâmetros:
-    y_true (list ou array): Valores reais das classes.
-    y_pred (list ou array): Valores previstos pelo modelo.
-
-    Retorna:
-    dict: Dicionário contendo as métricas de avaliação.
+    Parameters:
+    y_true (list or array): Real values.
+    y_pred (list or array): Predicted values.
+    
+    Returns:
+    dict: Dictionary containing the evaluation metrics.
     RMSE: Root Mean Squared Error
     MAE: Mean Absolute Error
     MAPE: Mean Absolute Percentage Error
