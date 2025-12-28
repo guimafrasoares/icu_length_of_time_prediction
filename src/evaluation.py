@@ -1,7 +1,7 @@
 from sklearn.metrics import accuracy_score, roc_auc_score, matthews_corrcoef, balanced_accuracy_score, r2_score, f1_score
 from sklearn.metrics import  mean_absolute_error, root_mean_squared_error, mean_absolute_percentage_error
 
-def evaluate_classification_model(y_true, y_pred, y_proba):
+def evaluate_classification_model(y_true, y_pred):
     """
     Evaluate the performance of a classification model.
 
@@ -19,7 +19,7 @@ def evaluate_classification_model(y_true, y_pred, y_proba):
     """
     accuracy = accuracy_score(y_true, y_pred)
     balanced_accuracy = balanced_accuracy_score(y_true, y_pred)
-    auc = roc_auc_score(y_true, y_proba, multi_class='ovr', average='macro')
+    auc = roc_auc_score(y_true, y_pred, multi_class='ovr', average='macro')
     f1 = f1_score(y_true, y_pred, average='macro')
     mcc = matthews_corrcoef(y_true, y_pred)
     return {

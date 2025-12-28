@@ -19,9 +19,7 @@ def load_data(database_url):
     return df
 
 def preprocess_data(df, classification: bool):
-    # Round 'los' to 2 decimal places
-    df['los'] = df['los'].round(2)
-
+    
     # Drop unecessary columns
     df_simplified = df.drop(['subject_id', 'hadm_id', 'stay_id', 'intime', 'outtime'], axis=1)
 
@@ -38,14 +36,16 @@ def preprocess_data(df, classification: bool):
         df_encoded[col] = label_encoder.fit_transform(df_encoded[col])
 
     if classification:
-        # For classification, label 'los' into categories
-        bins = [0, 1, 3, 7, float('inf')]
-        labels = [0, 1, 2, 3]  # 0: <1 day, 1: 1-3 days, 2: 3-7 days, 3: >7 days
-        df_encoded['los'] = pd.cut(df_encoded['los'], bins=bins, labels=labels, right=False)
+        # For classification, label 'los' into 2 categories
+        bins = [0, 7, float('inf')]
+        labels = [0, 1]  # 0: <=7 days, 1: >7 days
+        df_encoded['los'] = pd.cut(df_encoded['los'], bins=bins, labels=labels, right=True)
         
         # Encode los column
         label_encoder = LabelEncoder()
         df_encoded['los'] = label_encoder.fit_transform(df_encoded['los'])
+    else:
+        df_encoded['los'] = df_encoded['los'].round(1)
         
     return df_encoded
 

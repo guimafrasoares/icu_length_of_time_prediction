@@ -1,0 +1,3 @@
+import modelling_classification
+
+modelling_classification.run_classification_models()
