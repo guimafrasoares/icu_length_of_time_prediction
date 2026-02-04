@@ -74,7 +74,7 @@ def main(argv=None):
 
     need_classification = any(mc in classification_models for mc in model_choices)
     X_train, X_test, y_train, y_test = get_prepared_data(
-        database_url="postgresql://gms@localhost/mimiciv", classification=need_classification
+        database_url="", classification=need_classification
     )
 
     mapping = {
