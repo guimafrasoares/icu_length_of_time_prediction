@@ -15,7 +15,7 @@ def load_data(database_url):
     """
     engine = create_engine(database_url)
     with engine.connect() as connection:
-        df = pd.read_sql(sql="SELECT * FROM mimiciv_icu.full_patient_data;", con=connection)
+        df = pd.read_sql(sql="SELECT * FROM mimiciv_icu.full_patient_data WHERE careunit NOT LIKE 'NA' ORDER BY subject_id, stay_id, los;", con=connection)
 
     return df
 
@@ -51,8 +51,8 @@ def __preprocess_data(df, classification: bool):
     # Encode target variable
     if classification:
         # For classification, label 'los' into 2 categories
-        bins = [0, 7, float('inf')]
-        labels = [0, 1]  # 0: <=7 days, 1: >7 days
+        bins = [0, 4, float('inf')]
+        labels = [0, 1]  # 0: <= 4 days, 1: > 4 days
         df_encoded['los'] = pd.cut(df_encoded['los'], bins=bins, labels=labels, right=True)
 
     else:

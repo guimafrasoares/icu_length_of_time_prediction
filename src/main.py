@@ -9,7 +9,6 @@ Usage examples:
 
 from enum import Enum
 import argparse
-import sys
 
 from modelling_classification import (
     train_xgb_classifier_model,
@@ -18,6 +17,7 @@ from modelling_classification import (
     train_svc_model,
 )
 from modelling_regression import (
+    train_knn_regressor_model,
     train_xgb_regressor_model,
     train_random_forest_regressor_model,
     train_linear_regressor_model,
@@ -32,6 +32,7 @@ class ModelChoice(Enum):
     RANDOM_FOREST_REGRESSOR = "random_forest_regressor"
     LOGISTIC_REGRESSION = "logistic_regressor"
     LINEAR_REGRESSOR = "linear_regressor"
+    KNN_REGRESSOR = "knn_regressor"
     SVC = "svc"
 
 
@@ -63,9 +64,16 @@ def main(argv=None):
     args = parse_args(argv)
     model_choices = [ModelChoice(m) for m in args.model]
 
-    # Fetch prepared data for classification once
+    # Get prepared data
+    classification_models = {
+        ModelChoice.XGB_CLASSIFIER,
+        ModelChoice.RANDOM_FOREST_CLASSIFIER,
+        ModelChoice.SVC,
+    }
+
+    need_classification = any(mc in classification_models for mc in model_choices)
     X_train, X_test, y_train, y_test = get_prepared_data(
-        database_url="postgresql://gms@localhost/mimiciv", classification=True
+        database_url="postgresql://gms@localhost/mimiciv", classification=need_classification
     )
 
     mapping = {
@@ -75,6 +83,7 @@ def main(argv=None):
         ModelChoice.RANDOM_FOREST_REGRESSOR: train_random_forest_regressor_model,
         ModelChoice.LOGISTIC_REGRESSION: train_logistic_regression_model,
         ModelChoice.LINEAR_REGRESSOR: train_linear_regressor_model,
+        ModelChoice.KNN_REGRESSOR: train_knn_regressor_model,
         ModelChoice.SVC: train_svc_model,
     }
 

@@ -1,5 +1,43 @@
-from sklearn.metrics import accuracy_score, roc_auc_score, matthews_corrcoef, balanced_accuracy_score, r2_score, f1_score
-from sklearn.metrics import  mean_absolute_error, root_mean_squared_error, mean_absolute_percentage_error
+
+
+import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score, f1_score, matthews_corrcoef
+from sklearn.metrics import  mean_absolute_error, root_mean_squared_error, r2_score
+from sklearn.metrics import ConfusionMatrixDisplay, PredictionErrorDisplay
+
+_default_path_classification = "./trained_models/classification/"
+_default_path_regression = "./trained_models/regression/"
+
+def plot_classification_confusion_matrix(y_true, y_pred, model_name: str):
+    """
+    Plot and save the confusion matrix for a classification model.
+
+    Parameters:
+    y_true (list or array): Real values.
+    y_pred (list or array): Predicted values.
+    model_name (str): Name of the model (used for saving the plot).
+    """
+    disp = ConfusionMatrixDisplay.from_predictions(y_true, y_pred, cmap=plt.cm.Blues)
+    disp.ax_.set_title(f'Confusion Matrix - {model_name}')
+    disp.ax_.set_ylabel('TRUE')
+    disp.ax_.set_xlabel('PREDICTED')
+    plt.savefig(f'{_default_path_classification}{model_name}_confusion_matrix.png')
+    plt.close()
+
+def plot_regression_prediction_error(y_true, y_pred, model_name: str):
+    """
+    Plot and save the prediction error for a regression model.
+
+    Parameters:
+    y_true (list or array): Real values.
+    y_pred (list or array): Predicted values.
+    model_name (str): Name of the model (used for saving the plot).
+    """
+    print(y_true.head())
+    disp = PredictionErrorDisplay.from_predictions(y_true, y_pred)
+    disp.ax_.set_title(f'Prediction Error - {model_name}')
+    plt.savefig(f'{_default_path_regression}{model_name}_prediction_error.png')
+    plt.close()
 
 def evaluate_classification_model(y_true, y_pred):
     """
@@ -13,21 +51,23 @@ def evaluate_classification_model(y_true, y_pred):
     dict: Dictionary containing the evaluation metrics.
     ACC: Accuracy
     Balanced_ACC: Balanced Accuracy
-    AUC: Area Under the Curve
-    F1: F1 Score
-    MCC: Matthews Correlation Coefficient
+    AUC: Area under the curve
+    F1: F1 score
+    MCC: Matthews correlation coefficient
     """
-    accuracy = accuracy_score(y_true, y_pred)
-    balanced_accuracy = balanced_accuracy_score(y_true, y_pred)
-    auc = roc_auc_score(y_true, y_pred, multi_class='ovr', average='macro')
-    f1 = f1_score(y_true, y_pred, average='macro')
-    mcc = matthews_corrcoef(y_true, y_pred)
+    
+    acc = accuracy_score(y_true= y_true, y_pred= y_pred)
+    balanced_acc = balanced_accuracy_score(y_true= y_true, y_pred= y_pred)
+    auc = roc_auc_score(y_true= y_true, y_score= y_pred)
+    f1 = f1_score(y_true= y_true, y_pred= y_pred, average='macro')
+    mcc = matthews_corrcoef(y_true= y_true, y_pred= y_pred)
+
     return {
-        'ACC': accuracy,
-        'Balanced_ACC': balanced_accuracy,
-        'AUC': auc,
-        'F1': f1,
-        'MCC': mcc
+        'ACC': round(acc, 5),
+        'Balanced_ACC': round(balanced_acc, 5),
+        'AUC': round(auc, 5),
+        'F1': round(f1, 5),
+        'MCC': round(mcc, 5)
     }
 
 
@@ -43,18 +83,15 @@ def evaluate_regression_model(y_true, y_pred):
     dict: Dictionary containing the evaluation metrics.
     RMSE: Root Mean Squared Error
     MAE: Mean Absolute Error
-    MAPE: Mean Absolute Percentage Error
     R2: R-squared Score
     """
 
     rmse = root_mean_squared_error(y_true, y_pred)
     mae = mean_absolute_error(y_true, y_pred)
-    mape = mean_absolute_percentage_error(y_true, y_pred)
     r2 = r2_score(y_true, y_pred)
 
     return {
-        'RMSE': rmse,
-        'MAE': mae,
-        'MAPE': mape,
-        'R2': r2
+        'RMSE': round(rmse, 5),
+        'MAE': round(mae, 5),
+        'R2': round(r2, 5)
     }
