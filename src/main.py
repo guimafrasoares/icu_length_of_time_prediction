@@ -14,7 +14,7 @@ from modelling_classification import (
     train_xgb_classifier_model,
     train_random_forest_classifier_model,
     train_logistic_regression_model,
-    train_svc_model,
+    train_knn_classifier_model,
 )
 from modelling_regression import (
     train_knn_regressor_model,
@@ -33,7 +33,7 @@ class ModelChoice(Enum):
     LOGISTIC_REGRESSION = "logistic_regressor"
     LINEAR_REGRESSOR = "linear_regressor"
     KNN_REGRESSOR = "knn_regressor"
-    SVC = "svc"
+    KNN_CLASSIFIER = "knn_classifier"
 
 
 def parse_args(argv=None):
@@ -68,7 +68,8 @@ def main(argv=None):
     classification_models = {
         ModelChoice.XGB_CLASSIFIER,
         ModelChoice.RANDOM_FOREST_CLASSIFIER,
-        ModelChoice.SVC,
+        ModelChoice.LOGISTIC_REGRESSION,
+        ModelChoice.KNN_CLASSIFIER,
     }
 
     need_classification = any(mc in classification_models for mc in model_choices)
@@ -84,7 +85,7 @@ def main(argv=None):
         ModelChoice.LOGISTIC_REGRESSION: train_logistic_regression_model,
         ModelChoice.LINEAR_REGRESSOR: train_linear_regressor_model,
         ModelChoice.KNN_REGRESSOR: train_knn_regressor_model,
-        ModelChoice.SVC: train_svc_model,
+        ModelChoice.KNN_CLASSIFIER: train_knn_classifier_model,
     }
 
     # Iterate through requested models and train each

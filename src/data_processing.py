@@ -51,8 +51,8 @@ def __preprocess_data(df, classification: bool):
     # Encode target variable
     if classification:
         # For classification, label 'los' into 2 categories
-        bins = [0, 4, float('inf')]
-        labels = [0, 1]  # 0: <= 4 days, 1: > 4 days
+        bins = [0, 5, float('inf')]
+        labels = [0, 1]  # 0: <= 5 days, 1: > 5 days
         df_encoded['los'] = pd.cut(df_encoded['los'], bins=bins, labels=labels, right=True)
 
     else:

@@ -19,8 +19,6 @@ def plot_classification_confusion_matrix(y_true, y_pred, model_name: str):
     """
     disp = ConfusionMatrixDisplay.from_predictions(y_true, y_pred, cmap=plt.cm.Blues)
     disp.ax_.set_title(f'Confusion Matrix - {model_name}')
-    disp.ax_.set_ylabel('TRUE')
-    disp.ax_.set_xlabel('PREDICTED')
     plt.savefig(f'{_default_path_classification}{model_name}_confusion_matrix.png')
     plt.close()
 
@@ -33,7 +31,6 @@ def plot_regression_prediction_error(y_true, y_pred, model_name: str):
     y_pred (list or array): Predicted values.
     model_name (str): Name of the model (used for saving the plot).
     """
-    print(y_true.head())
     disp = PredictionErrorDisplay.from_predictions(y_true, y_pred)
     disp.ax_.set_title(f'Prediction Error - {model_name}')
     plt.savefig(f'{_default_path_regression}{model_name}_prediction_error.png')
