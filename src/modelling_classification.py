@@ -40,7 +40,8 @@ def train_random_forest_classifier_model(X_train, y_train, X_test, y_test):
     param_dist = {
         'max_depth': [3, 5, 7, 9],
         'criterion': ['gini', 'entropy', 'log_loss'],
-        'n_estimators': [100, 200, 500, 1000]
+        'n_estimators': [100, 200, 500, 1000],
+        'class_weight': ['balanced', 'balanced_subsample', None]
     }
     __search_best_params(RandomForestClassifier(), param_dist, X_train, y_train, X_test, y_test, "Random_Forest_Classifier")
     print("*******************************")
@@ -62,7 +63,8 @@ def train_logistic_regression_model(X_train, y_train, X_test, y_test):
         'l1_ratio': [1.0],
         'solver': ['liblinear'],
         'C': [0.0, 0.25, 0.5, 0.75, 1.0, 10.0, 100.0],
-        'max_iter': [100000]
+        'max_iter': [100000],
+        'class_weight': ['balanced', None]
     }
     __search_best_params(LogisticRegression(), param_dist, X_train, y_train, X_test, y_test, "Logistic_Regression_L1_1")
     print("*******************************")
