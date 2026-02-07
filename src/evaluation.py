@@ -1,5 +1,5 @@
 
-
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score, f1_score, matthews_corrcoef
 from sklearn.metrics import  mean_absolute_error, root_mean_squared_error, r2_score
@@ -92,3 +92,18 @@ def evaluate_regression_model(y_true, y_pred):
         'MAE': round(mae, 5),
         'R2': round(r2, 5)
     }
+
+def evaluate_xgboost_feature_importance(feature_importances, feature_names, classification: bool):
+    print(feature_importances)
+    feature_importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': feature_importances})
+    feature_importance_df.sort_values(by='Importance', ascending=False, inplace=True)
+    plt.barh(feature_importance_df['Feature'], feature_importance_df['Importance'])
+    plt.title('Feature Importance in XGBoost')
+    plt.ylabel('Feature')
+    plt.xlabel('Importance')
+    plt.tight_layout()
+    if classification:
+        plt.savefig(f'{_default_path_classification}XGB_feature_importance.png')
+    else:
+        plt.savefig(f'{_default_path_regression}XGB_feature_importance.png')
+    plt.close()
